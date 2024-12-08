@@ -11,5 +11,5 @@ data class Driver(
     val id: Long = 0,
     val name: String,
     val email: String,
-    val password: String // Store hashed password, not plain text!
+    val password: String
 )
