@@ -16,12 +16,12 @@ class AuthController(
     private val driverService: DriverService
 ) {
 
-    data class RegisterRequest(val name: String, val email: String, val password: String)
+    data class RegisterRequest(val name: String, val email: String, val password: String ,val address: String,val phoneNumber: String, val dateOfBirth: String)
 
     @PostMapping("/register")
     fun register(@RequestBody request: RegisterRequest): ResponseEntity<String> {
         return try {
-            userService.registerDriver(request.name, request.email, request.password)
+            userService.registerDriver(request.name, request.email, request.password,request.address, request.phoneNumber, request.dateOfBirth)
             ResponseEntity.ok("User registered successfully")
         } catch (e: Exception) {
             ResponseEntity.status(400).body("Error: ${e.message}")

@@ -11,5 +11,8 @@ data class Driver(
     val id: Long = 0,
     val name: String,
     val email: String,
-    val password: String
+    val password: String,
+    val address: String,
+    val phoneNumber: String,
+    val dateOfBirth: String,
 )
