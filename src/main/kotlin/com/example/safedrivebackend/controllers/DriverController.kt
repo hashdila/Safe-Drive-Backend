@@ -62,6 +62,40 @@ class AuthController(
         }
     }
 
+    @GetMapping("/all-locations")
+    fun getAllLocations(): ResponseEntity<List<Map<String, Double>>> {
+        return ResponseEntity.ok(driverService.getAllDriverLocations())
+    }
+//    @GetMapping("/driver-by-location")
+//    fun getDriverByLocation(
+//        @RequestParam latitude: Double,
+//        @RequestParam longitude: Double
+//    ): ResponseEntity<Driver> {
+//        val driver = driverService.getDriverByLocation(latitude, longitude)
+//        return if (driver != null) {
+//            ResponseEntity.ok(driver)
+//        } else {
+//            ResponseEntity.status(404).body(null)
+//        }
+//    }
+
+    @GetMapping("/details/location")
+    fun getDriverByLocation(
+        @RequestParam latitude: Double,
+        @RequestParam longitude: Double
+    ): ResponseEntity<Driver> {
+        return try {
+            val driver = driverService.getDriverByLocation(latitude, longitude)
+            ResponseEntity.ok(driver)
+        } catch (e: Exception) {
+            ResponseEntity.status(404).body(null)
+        }
+    }
+
+
+
+
+
     @GetMapping("/details/{email}")
     fun getDriverDetails(@PathVariable email: String): ResponseEntity<Driver> {
         val driver = driverService.getDriverDetails(email)

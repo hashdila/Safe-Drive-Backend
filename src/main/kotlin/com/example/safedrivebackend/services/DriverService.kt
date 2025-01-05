@@ -73,6 +73,24 @@ class DriverService(private val driverRepository: DriverRepository) {
         return driverRepository.findByEmail(email) ?: throw Exception("Driver not found")
     }
 
+    fun getAllDriverLocations(): List<Map<String, Double>> {
+        return driverRepository.findAll().mapNotNull { driver ->
+            if (driver.latitude != null && driver.longitude != null) {
+                mapOf("latitude" to driver.latitude!!, "longitude" to driver.longitude!!)
+            } else null
+        }
+    }
+
+//    fun getDriverByLocation(latitude: Double, longitude: Double): Driver? {
+//        return driverRepository.findByLatitudeAndLongitude(latitude, longitude)
+//    }
+
+    fun getDriverByLocation(latitude: Double, longitude: Double): Driver {
+        return driverRepository.findByLatitudeAndLongitude(latitude, longitude)
+            ?: throw Exception("No driver found at the specified location")
+    }
+
+
 
 
 
