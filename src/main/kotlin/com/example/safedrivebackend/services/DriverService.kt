@@ -5,7 +5,10 @@ import com.example.safedrivebackend.repositories.DriverRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 import org.springframework.stereotype.Service
-import java.text.SimpleDateFormat
+import org.springframework.web.multipart.MultipartFile
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
 
 
 @Service
@@ -39,6 +42,40 @@ class DriverService(private val driverRepository: DriverRepository) {
             null
         }
     }
+
+    private fun saveFile(file: MultipartFile, uploadDir: String): String {
+        val uploadPath = Path.of(uploadDir)
+        if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath)
+        val fileName = System.currentTimeMillis().toString() + "_" + file.originalFilename
+        val filePath = uploadPath.resolve(fileName)
+        Files.copy(file.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING)
+        return filePath.toString()
+    }
+
+    fun updateVerificationDetails(
+        email: String,
+        latitude: Double,
+        longitude: Double,
+        frontImage: MultipartFile,
+        backImage: MultipartFile
+    ) {
+        val driver = driverRepository.findByEmail(email) ?: throw Exception("Driver not found")
+        val frontImagePath = saveFile(frontImage, "uploads/front")
+        val backImagePath = saveFile(backImage, "uploads/back")
+        driver.latitude = latitude
+        driver.longitude = longitude
+        driver.frontImagePath = frontImagePath
+        driver.backImagePath = backImagePath
+        driverRepository.save(driver)
+    }
+
+    fun getDriverDetails(email: String): Driver {
+        return driverRepository.findByEmail(email) ?: throw Exception("Driver not found")
+    }
+
+
+
+
 
 
 }

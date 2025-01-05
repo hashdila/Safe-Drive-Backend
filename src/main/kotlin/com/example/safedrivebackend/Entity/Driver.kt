@@ -2,8 +2,6 @@ package com.example.safedrivebackend.Entity
 
 import jakarta.persistence.*
 
-
-
 @Entity
 data class Driver(
     @Id
@@ -15,4 +13,8 @@ data class Driver(
     val address: String,
     val phoneNumber: String,
     val dateOfBirth: String,
+    var latitude: Double? = null,
+    var longitude: Double? = null,
+    var frontImagePath: String? = null,
+    var backImagePath: String? = null
 )
