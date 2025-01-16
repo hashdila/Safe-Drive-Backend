@@ -79,6 +79,8 @@ class AuthController(
 //        }
 //    }
 
+
+
     @GetMapping("/details/location")
     fun getDriverByLocation(
         @RequestParam latitude: Double,
